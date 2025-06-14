@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PureGreen Redirect</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      min-width: 100vw;
+      background: #0b6e3c url('puregreen-splash-temp.png') center center no-repeat;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo {
+      width: 320px;
+      max-width: 80vw;
+      margin-bottom: 40px;
+    }
+    .loading-bar {
+      width: 240px;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 32px;
+    }
+    .loading-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7ed957 0%, #b6e72e 100%);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+    .redirecting-text {
+      color: #fff;
+      font-size: 1.2rem;
+      margin-top: 24px;
+      font-family: Arial, sans-serif;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <img src="puregreen-splash-temp.png" alt="PureGreen Logo" class="logo" />
+  <div class="redirecting-text">Redirecting you to the app store...</div>
+  <div class="loading-bar">
+    <div class="loading-bar-inner" id="loadingBar"></div>
+  </div>
+  <script>
+    function getMobileOS() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(ua)) {
+        return 'android';
+      }
+      if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+        return 'ios';
+      }
+      return 'other';
+    }
+
+    async function redirectToStore() {
+      try {
+        const res = await fetch('store-urls.json');
+        const urls = await res.json();
+        const os = getMobileOS();
+        let targetUrl = urls.play;
+        if (os === 'ios') targetUrl = urls.apple;
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 3000);
+      } catch (e) {
+        document.querySelector('.redirecting-text').textContent = 'Failed to load store URLs.';
+      }
+    }
+
+    // Animate loading bar
+    let progress = 0;
+    const loadingBar = document.getElementById('loadingBar');
+    const interval = setInterval(() => {
+      progress += 100 / (3000 / 30);
+      if (progress > 100) progress = 100;
+      loadingBar.style.width = progress + '%';
+      if (progress >= 100) clearInterval(interval);
+    }, 30);
+
+    redirectToStore();
+  </script>
+</body>
+</html> 
