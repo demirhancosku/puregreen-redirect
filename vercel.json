@@ -2,8 +2,5 @@
   "rewrites": [
     { "source": "/", "destination": "/index.html" }
   ],
-  "cleanUrls": true,
-  "static": {
-    "public": true
-  }
+  "cleanUrls": true
 } 
