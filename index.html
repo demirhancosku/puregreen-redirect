@@ -41,16 +41,15 @@
       transition: width 0.3s;
     }
     .redirecting-text {
+      margin-top: 40vh;
       color: #fff;
       font-size: 1.2rem;
-      margin-top: 24px;
       font-family: Arial, sans-serif;
       letter-spacing: 1px;
     }
   </style>
 </head>
 <body>
-  <img src="puregreen-splash-temp.png" alt="PureGreen Logo" class="logo" />
   <div class="redirecting-text">Redirecting you to the app store...</div>
   <div class="loading-bar">
     <div class="loading-bar-inner" id="loadingBar"></div>
@@ -71,9 +70,16 @@
       try {
         const res = await fetch('store-urls.json');
         const urls = await res.json();
+        const isBeta = new URLSearchParams(window.location.search).get('beta') === '1';
         const os = getMobileOS();
-        let targetUrl = urls.play;
-        if (os === 'ios') targetUrl = urls.apple;
+        let targetUrl = urls.apple;
+
+        console.log(isBeta, os, targetUrl)
+        targetUrl = isBeta ? (urls.apple_beta || urls.apple) : urls.apple;
+        
+        if (os === 'android') {
+          targetUrl = isBeta ? (urls.play_beta || urls.play) : urls.play;
+        }
         setTimeout(() => {
           window.location.href = targetUrl;
         }, 3000);

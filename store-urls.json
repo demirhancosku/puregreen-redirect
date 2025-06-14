@@ -1,4 +1,6 @@
 {
-  "apple": "https://apps.apple.com/app/idXXXXXXXXX",
-  "play": "https://play.google.com/store/apps/details?id=XXXXXXXXX"
+  "apple": "https://apps.apple.com/app/6745027916",
+  "apple_beta": "https://testflight.apple.com/join/RCXESbn5",
+  "play": "https://play.google.com/store/apps/details?id=com.puregreen.ordering",
+  "play_beta": "https://play.google.com/store/apps/details?id=com.puregreen.ordering"
 } 
